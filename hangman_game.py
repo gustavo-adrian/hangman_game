@@ -23,7 +23,7 @@ import os
 
 
 def read_data():
-    with open('./archivos/data.txt', 'r', encoding='utf-8') as f:
+    with open('./files/data.txt', 'r', encoding='utf-8') as f:
         list = [word for word in f]
 
         # elimino el salto de linea que figura como caracter
@@ -42,7 +42,8 @@ def word_choice():
     guessed_word = '_'*len(selected_word)   # cada guion bajo representa una letra de la palabra 
     guessed_word = list(guessed_word)       # agrega cada guion bajo en una lista 
 
-    return (selected_word, guessed_word) 
+    return (selected_word, guessed_word)
+
 
 def accents(selected_word):
     selected_word_n = ''.join(selected_word).maketrans('áéíóú', 'aeiou')
@@ -103,32 +104,48 @@ def hangman():
           |
     =========''']
 
+    # si el usuario se equivoca 6 veces, pierde
+
     return HANGMAN
 
 def hangman_game():
     selected_word, guessed_word = word_choice()
     selected_word_n =accents(selected_word)
-    
+    HANGMAN = hangman()
+    words_used = []
+    h = 0
     # mientras no se adivine la palabra se ejecuta el ciclo, comparo listas
-    while selected_word_n != guessed_word:
-        print('Adivina la palabra')
+    # while selected_word_n != guessed_word:
+    while h < len(HANGMAN):
+        print('Adivina la palabra') 
+        print('Palabras usadas: ', '-'.join(words_used))
+        print(HANGMAN[h])
         # print(''.join(selected_word))   # transformo la lista en un string para mostrar al jugador
         print(' '.join(guessed_word))   # transformo la lista en un string para mostrar al jugador
         
         letter = input('Ingrese una letra: ').lower()
 
         # comparo la letra ingresada con cada elemento de la lista, que seria cada letra de la palabra seleccionada al azar, y reemplazo por indice en la lista donde se guardara la palabra adivinada
+        words_used = list (words_used)
+        words_used.append(letter)  
+      
+        if letter in selected_word_n:
+            for i, c in enumerate(selected_word_n):
+                if c == letter:
+                    guessed_word[i] = c      
+        else:
+            h += 1
+        os.system ("cls")
 
-        HANGMAN = hangman()
-        wrong_words = []
-        for i, c in enumerate(selected_word_n):
-            if c == letter:
-                guessed_word[i] = c
+        if selected_word_n == guessed_word:
+            break
 
-            os.system ("cls")
-
-    selected_word = ''.join(selected_word)
-    print(f'¡Ganaste! La palabra es: {selected_word}.')
+    if h == len(HANGMAN): # el tamaño de la lista es 7, pero llega hasta el indice 6
+        print(HANGMAN[h-1])
+        print('¡Perdiste! La palabra era: ', ''.join(selected_word) )
+    else:
+        selected_word = ''.join(selected_word)
+        print(f'¡Ganaste! La palabra es: {selected_word}.')
 
 
 def run():
