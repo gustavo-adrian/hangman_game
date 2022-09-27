@@ -1,1 +1,1 @@
-# hangman_game
+Juego del ahorcado escrito en Python : )
