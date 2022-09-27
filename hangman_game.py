@@ -45,12 +45,31 @@ def word_choice():
     return (selected_word, guessed_word)
 
 
+def entry():
+    alphabet = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'ñ', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+    while True:
+        try:
+            letter = input('Ingrese una letra: ').lower()
+            if letter not in alphabet:
+                raise Exception('Ingrese una letra. Intente de nuevo.')
+            # if len(letter) > 1 or letter.isnumeric() or letter == '':
+            #     raise Exception('Ingrese una letra. Intente de nuevo.')
+            else:
+                break
+        except Exception as e:
+            print(e)
+            # os.system ("cls")
+            
+    return letter
+
+
 def accents(selected_word):
     selected_word_n = ''.join(selected_word).maketrans('áéíóú', 'aeiou')
     selected_word_n = ''.join(selected_word).translate(selected_word_n)  # esta es la variable que uso para comparar
     selected_word_n = list(selected_word_n)  # paso a lista
     
     return selected_word_n
+
 
 def hangman():
     HANGMAN = ['''
@@ -108,6 +127,7 @@ def hangman():
 
     return HANGMAN
 
+
 def hangman_game():
     selected_word, guessed_word = word_choice()
     selected_word_n =accents(selected_word)
@@ -123,10 +143,10 @@ def hangman_game():
         # print(''.join(selected_word))   # transformo la lista en un string para mostrar al jugador
         print(' '.join(guessed_word))   # transformo la lista en un string para mostrar al jugador
         
-        letter = input('Ingrese una letra: ').lower()
-
+        letter = entry()
+     
         # comparo la letra ingresada con cada elemento de la lista, que seria cada letra de la palabra seleccionada al azar, y reemplazo por indice en la lista donde se guardara la palabra adivinada
-        words_used = list (words_used)
+
         words_used.append(letter)  
       
         if letter in selected_word_n:
